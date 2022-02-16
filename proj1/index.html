@@ -29,8 +29,8 @@
 		<br>
 		<br>
 		<h2 align="middle">Part 1: Drawing Single-Color Triangles</h2>
-		<p align="left" style="margin-left: 10%; margin-right:10%">This portion of the project required us to rasterize a triangle. We used a point in triangle test on each sample point within the bounds given to us. Each sample's coordinates were tested using the coordinate plus <code>(0.5, 0.5)</code>. Our algorithm is no waorse than one that checks each sample within the bounding box of the triangle because that is exactly what we do. We check each sample within the bounding box of the triangle. However, we made this faster by taking advantage of the cache. We reversed the ordering of our for loops start with y-coordinates and then moving along each x.</p>
-		<h4 align="left" style="margin-left: 10%; margin-right:10%">We rasterized triangles by following these steps:</h4>
+		<h4 align="left" style="margin-left: 10%; margin-right:10%">This portion of the project required us to rasterize a triangle. We used a point in triangle test on each sample point within the bounds given to us. Each sample's coordinates were tested using the coordinate plus <code>(0.5, 0.5)</code>. Our algorithm is no waorse than one that checks each sample within the bounding box of the triangle because that is exactly what we do. We check each sample within the bounding box of the triangle. However, we made this faster by taking advantage of the cache. We reversed the ordering of our for loops start with y-coordinates and then moving along each x.</h4>
+		<p align="left" style="margin-left: 10%; margin-right:10%">We rasterized triangles by following these steps:</p>
 		<ul align="left" style="margin-left: 12%">
 			<li>Find the x and y bounds of the triangle by taking the <code>(x_min, y_min)</code> to <code>(x_max, y_max)</code> of the coordinates given.</li>
 			<li>We then iterated through each pixel within the bounds and checked if the point was in the triangle using the inside function provided to us in triangulation.cpp.</li>
@@ -55,8 +55,8 @@
 		<br>
 		<br>
 		<h2 align="middle">Part 2: Antialiasing by Supersampling</h2>
-		<p align="left" style="margin-left: 10%; margin-right:10%">This portion of the project required us to rasterize a triangle by using the sampling methods described in class. We took sample rate amount of samples where took took sqrt(sample_rate) x-coordinate samples and sqrt(sample_rate) y-coordinate samples. We used a point in triangle test on each sample point within the bounds given to us. Each sample's coordinates were tested using the coordinate plus <code>((0.5 + sample_number_x)/sqrt(sample_rate), (0.5 + sample_number_y)/sqrt(sample_rate)).</code></p>
-		<h4 align="left" style="margin-left: 10%; margin-right:10%">We implemented supersampling by following these steps:</h4>
+		<h4 align="left" style="margin-left: 10%; margin-right:10%">This portion of the project required us to rasterize a triangle by using the sampling methods described in class. We took sample rate amount of samples where took took sqrt(sample_rate) x-coordinate samples and sqrt(sample_rate) y-coordinate samples. We used a point in triangle test on each sample point within the bounds given to us. Each sample's coordinates were tested using the coordinate plus <code>((0.5 + sample_number_x)/sqrt(sample_rate), (0.5 + sample_number_y)/sqrt(sample_rate)).</code></h4>
+		<p align="left" style="margin-left: 10%; margin-right:10%">We implemented supersampling by following these steps:</p>
 		<ul align="left" style="margin-left: 12%">
 			<li>Find the x and y bounds of the triangle by taking the <code>(x_min, y_min)</code> to <code>(x_max, y_max)</code> of the coordinates given.</li>
 			<li>We then iterated through each pixel within the bounds and also iterated sqrt(sample_rate) amount of samples in each direction</li>
@@ -100,8 +100,8 @@
 		<img src="img/part4_explain.png" align="middle" width="30%"/>
 		<figcaption align="middle">The color corresponds with the distance from each vertex of R, G, and B.</figcaption>
 	</div>
-	<p align="left" style="margin-left: 10%; margin-right:10%">This portion of the project required us to draw a triangle with colors defined at the vertices and interpolated across the triangle area using barycentric interpolation. Barycentric coordinates calculate the distance from a given point to each of the triangle's vertices. This allows us to assign different weights to 3 different colors as a function of distance to each vertex. </p>
-	<h4 align="left" style="margin-left: 10%; margin-right:10%">We rasterized these interpolated color triangles by following these steps:</h4>
+	<h4 align="left" style="margin-left: 10%; margin-right:10%">This portion of the project required us to draw a triangle with colors defined at the vertices and interpolated across the triangle area using barycentric interpolation.</h4>
+	<p align="left" style="margin-left: 10%; margin-right:10%">Barycentric coordinates calculate the distance from a given point to each of the triangle's vertices. This allows us to assign different weights to 3 different colors as a function of distance to each vertex. We rasterized these interpolated color triangles by following these steps:</p>
 	<ul align="left" style="margin-left: 12%">
 		<li>Find the x and y bounds of the triangle by taking the <code>(x_min, y_min)</code> to <code>(x_max, y_max)</code> of the coordinates given.</li>
 		<li>We then iterated through each pixel within the bounds and also iterated sqrt(sample_rate) amount of samples in each direction</li>
@@ -112,4 +112,23 @@
 		<img src="img/part4.png" align="middle" width="30%"/>
 		<figcaption align="middle">UwU. A color wheel. OwO</figcaption>
 	</div>
+	<br>
+	<br>
+	<h2 align="middle">Part 5: "Pixel Sampling" for Texture Mapping</h2>
+	<h4 align="left" style="margin-left: 10%; margin-right:10%">This portion of the project required us to draw a triangle with colors defined by texture mapping with the given 2D texture coordinates at each vertex and the given Texture image.</h4>
+	<p align="left" style="margin-left: 10%; margin-right:10%">Pixel sampling is the method of retrieving the color / texture at a given point of the shape’s image. With supersampling, this sampling is done at EACH supersampled point. After retrieving the specific point in texture space that is to be sampled, the color at this point can only be calculated by using the information of at least one of the nearby texels (texture pixels), as these are the fundamental coloring blocks of the texture. There are multiple methods of pixel sampling–such as nearest and bilinear–which use nearby texels differently (with differences in performance). Nearest pixel sampling samples the color from the nearest texel, whereas bilinear samples from the surrounding four texels with help of linear interpolation to get the “blend” of colors between these texels. For its implementation, we have to sample at each supersampled point in the image space, which involves converting these points to barycentric coordinates to retrieve the respective point in texture space. These barycentric coordinates lie in the range [0, 1], and therefore must be scaled by the mipmap’s width (x) and height (y) respectively. Finally, the color is found by calling the respective sample method (sample_nearest, sample_bilinear). For sample_nearest, the color is retrieved from the rounded (u, v) coordinates, and sample_bilinear uses calculations from lecture involving linear interpolation to retrieve the color at this interpolated (u, v) coordinate.</p>
+	<div align="middle">
+		<table width="90%" align="middle">
+			<td>
+				<img src="./img/bilinear.png" align="middle" style="width:100%"/>
+				<figcaption align="middle">Little to no stray pixels as shown in the pixel inspector.</figcaption>
+			</td>
+			<td>
+				<img src="./img/part1_2.png" align="middle" style="width:100%"/>
+				<figcaption align="middle">A lot of stray pixels found using the pixel inspector.</figcaption>
+			</td>
+		</table>
+	</div>
+	<br>
+	<p align="left" style="margin-left: 10%; margin-right:10%">As you can see from images above, we can see that bilinear sampling clearly does not lead to many stray pixels; however, in the nearest sampling, we can see a line of stray pixels.</p>
 </html>
