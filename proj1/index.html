@@ -121,7 +121,7 @@
 	<h4 align="left" style="margin-left: 10%; margin-right:10%">This portion of the project required us to draw a triangle with colors defined by texture mapping with the given 2D texture coordinates at each vertex and the given Texture image.</h4>
 	<p align="left" style="margin-left: 10%; margin-right:10%">Pixel sampling is the method of retrieving the color / texture at a given point of the shape’s image. With supersampling, this sampling is done at EACH supersampled point. After retrieving the specific point in texture space that is to be sampled, the color at this point can only be calculated by using the information of at least one of the nearby texels (texture pixels), as these are the fundamental coloring blocks of the texture. There are multiple methods of pixel sampling–such as nearest and bilinear–which use nearby texels differently (with differences in performance). Nearest pixel sampling samples the color from the nearest texel, whereas bilinear samples from the surrounding four texels with help of linear interpolation to get the “blend” of colors between these texels. For its implementation, we have to sample at each supersampled point in the image space, which involves converting these points to barycentric coordinates to retrieve the respective point in texture space. These barycentric coordinates lie in the range [0, 1], and therefore must be scaled by the mipmap’s width (x) and height (y) respectively. Finally, the color is found by calling the respective sample method (sample_nearest, sample_bilinear). For sample_nearest, the color is retrieved from the rounded (u, v) coordinates, and sample_bilinear uses calculations from lecture involving linear interpolation to retrieve the color at this interpolated (u, v) coordinate.</p>
 	<div align="middle">
-		<table width="90%" align="middle">
+		<table width="70%" align="middle">
 			<td>
 				<img src="./img/bilinear_1.png" align="middle" style="width:100%"/>
 				<figcaption align="middle">Little to no stray pixels as shown in the pixel inspector.</figcaption>
@@ -134,8 +134,12 @@
 	</div>
 	<br>
 	<p align="left" style="margin-left: 10%; margin-right:10%">As you can see from images above, we can see that bilinear sampling clearly does not lead to many stray pixels; however, in the nearest sampling, we can see a line of stray pixels.</p>
+	<br>
+	<br>
+	<br>
+	<br>
 	<div align="middle">
-		<table width="90%" align="middle">
+		<table width="70%" align="middle">
 			<td>
 				<img src="./img/bilinear_sample_1.png" align="middle" style="width:100%"/>
 				<figcaption align="middle">Bilinear image with a sample rate of 1.</figcaption>
@@ -147,7 +151,7 @@
 		</table>
 	</div>
 	<div align="middle">
-		<table width="90%" align="middle">
+		<table width="70%" align="middle">
 			<td>
 				<img src="./img/bilinear_sample_16.png" align="middle" style="width:100%"/>
 				<figcaption align="middle">Bilinear image with a sample rate of 16.</figcaption>
@@ -164,5 +168,10 @@
 	<h2 align="middle">Part 6: "Level Sampling" With Mipmaps for Texture Mapping</h2>
 	<h4 align="left" style="margin-left: 10%; margin-right:10%">This portion of the project required us to support sampling different mipmap levels.</h4>
 	<p align="left" style="margin-left: 10%; margin-right:10%">Level sampling is making use of the mipmaps and calculating levels to get rid of moire effects and sharpness. For example when certain views are far away, we'd like to use smaller-sized textures (higher level mipmaps) to reduce sharpness, and when views are close, larger-sized textures (lower level mipmaps) should be used to give clarity and detail. L_ZERO and P_NEAREST, L_ZERO and P_LINEAR, L_NEAREST and P_NEAREST, as well as L_NEAREST and P_LINEAR are used.</p>
-
+	<p align="left" style="margin-left: 10%; margin-right:10%">With regards to speed, nearest sampling for both pixel and level sampling are far faster than bilinear, as the latter includes several linear interpolation calculations as well as multiple sampling calls. WIth respect to memory, level sampling takes more memory in order to take advantage of the mipmaps (which must be stored in memory). Furthermore, supersampling with higher rates grows the sample buffer by that rate, which can drastically increase memory usage. Lastly, antialiasing is often mitigated the best at the cost of speed and memory performance–thus bilinear pixel and level sampling tend to perform better with respect to antialiasing. However, a satisfactory result can be achieved by using less expensive methods and thus some images can strictly use none of these, or nearest sampling to achieve a close image to that achieved by the more costly methods (e.g. high supersampling, bilinear sampling).</p>
+	
+	<br>
+	<br>
+	<br>
+	<br>
 	</html>
