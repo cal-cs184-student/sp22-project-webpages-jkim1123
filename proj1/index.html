@@ -81,11 +81,22 @@
 		</div>
 		<h2 align="middle">Part 3: Transforms</h2>
 		<p align="left" style="margin-left: 10%; margin-right:10%">This portion of the project required us to implement 3 different transforms, translate, scale, and rotate. </p>
-		<h4 align="left" style="margin-left: 10%; margin-right:10%">For each transform, we followed these steps:</h4>
-		<ul align="left" style="margin-left: 12%">
-			<li>Translate:</li>
-			<li>Scale:</li>
-			<li>Rotate:</li>
-		</ul>
+		<div align="middle">
+			<img src="img/part3.png" align="middle" width="30%"/>
+			<figcaption align="middle">A robot standing at attention.</figcaption>
+		</div>
+		<p align="left" style="margin-left: 10%; margin-right:10%">We made cube man stand at the position of attention where he keeps his arms down and legs straight. In fact if he had feet, they would be at a 45 degree angle; however he doesn't. He is trying his best to keep his bearing. :(</p>
 	</body>
+	h2 align="middle">Part 4: Barycentric Coordinates</h2>
+	<p align="left" style="margin-left: 10%; margin-right:10%">This portion of the project required us to draw a triangle with colors defined at the vertices and interpolated across the triangle area using barycentric interpolation.</p>
+	<h4 align="left" style="margin-left: 10%; margin-right:10%">We rasterized these interpolated color triangles by following these steps:</h4>
+	<ul align="left" style="margin-left: 12%">
+		<li>Find the x and y bounds of the triangle by taking the <code>(x_min, y_min)</code> to <code>(x_max, y_max)</code> of the coordinates given.</li>
+		<li>We then iterated through each pixel within the bounds and checked if the point was in the triangle using the inside function provided to us in triangulation.cpp.</li>
+		<li>If the point was in the triangle, we called fill_pixel on the coordinate with the color provided to us.</li>
+	</ul>
+	<div align="middle">
+		<img src="img/part4.png" align="middle" width="30%"/>
+		<figcaption align="middle">A color wheel. OWO</figcaption>
+	</div>
 </html>
