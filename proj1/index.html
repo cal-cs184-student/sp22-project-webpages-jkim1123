@@ -12,7 +12,6 @@
 		  display: block;
 		  margin-left: auto;
 		  margin-right: auto;
-		  float: left;
 		}
 		body {
 			text-align:left;
@@ -38,10 +37,21 @@
 			<li>If the point was in the triangle, we called fill_pixel on the coordinate with the color provided to us.</li>
 		</ul>
 		<div align="middle">
-			<img src="img/part1_1.png" align="middle" width="30%"/>
-			<figcaption align="middle">Aliases while using the default settings.</figcaption>
+			<table width="100%" align="middle">
+				<td>
+					<img src="./img/part1_1.png" align="middle" style="width:100%"/>
+					<figcaption align="middle">Default aliasing</figcaption>
+				</td>
+				<td>
+					<img src="./img/part1_2.png" align="middle" style="width:100%"/>
+					<figcaption align="middle">No optimization timestamps</figcaption>
+				</td>
+				<td>
+					<img src="./img/part1_3.png" align="middle" style="width:100%"/>
+					<figcaption align="middle">Optimization timestamps</figcaption>
+				</td>
+			</table>
 		</div>
-		<img src ="./img/part1_1.png"><img src ="./img/part1_2.png"><img src ="./img/part1_3.png">
 		<h2 class="clear" align="middle">Part 2: Antialiasing by Supersampling</h2>
 		<p align="left" style="margin-left: 10%; margin-right:10%">This portion of the project required us to rasterize a triangle by using the sampling methods described in class. We took sample rate amount of samples where took took sqrt(sample_rate) x-coordinate samples and sqrt(sample_rate) y-coordinate samples. We used a point in triangle test on each sample point within the bounds given to us. Each sample's coordinates were tested using the coordinate plus <code>((0.5 + sample_number_x)/sqrt(sample_rate), (0.5 + sample_number_y)/sqrt(sample_rate)).</code></p>
 		<h4 align="left" style="margin-left: 10%; margin-right:10%">We implemented supersampling by following these steps:</h4>
