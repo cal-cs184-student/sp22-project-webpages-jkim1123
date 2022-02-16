@@ -93,7 +93,7 @@
 	<ul align="left" style="margin-left: 12%">
 		<li>Find the x and y bounds of the triangle by taking the <code>(x_min, y_min)</code> to <code>(x_max, y_max)</code> of the coordinates given.</li>
 		<li>We then iterated through each pixel within the bounds and checked if the point was in the triangle using the inside function provided to us in triangulation.cpp.</li>
-		<li>If the point was in the triangle, we called fill_pixel on the coordinate with the color provided to us.</li>
+		<li>If the point was in the triangle, we calculated the 3 weights based on barycentric coordinates using the formula given in the slides. This allowed us to multiply each color with a weight and fill our sample buffer with the correct color weight distribution.</li>
 	</ul>
 	<div align="middle">
 		<img src="img/part4.png" align="middle" width="30%"/>
