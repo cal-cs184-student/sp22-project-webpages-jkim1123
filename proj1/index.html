@@ -133,5 +133,63 @@
 		</table>
 	</div>
 	<br>
+	<p align="left" style="margin-left: 10%; margin-right:10%">As you c<h2 align="middle">Part 5: "Pixel Sampling" for Texture Mapping</h2>
+	<h4 align="left" style="margin-left: 10%; margin-right:10%">This portion of the project required us to draw a triangle with colors defined by texture mapping with the given 2D texture coordinates at each vertex and the given Texture image.</h4>
+	<p align="left" style="margin-left: 10%; margin-right:10%">Pixel sampling is the method of retrieving the color / texture at a given point of the shape’s image. With supersampling, this sampling is done at EACH supersampled point. After retrieving the specific point in texture space that is to be sampled, the color at this point can only be calculated by using the information of at least one of the nearby texels (texture pixels), as these are the fundamental coloring blocks of the texture. There are multiple methods of pixel sampling–such as nearest and bilinear–which use nearby texels differently (with differences in performance). Nearest pixel sampling samples the color from the nearest texel, whereas bilinear samples from the surrounding four texels with help of linear interpolation to get the “blend” of colors between these texels. For its implementation, we have to sample at each supersampled point in the image space, which involves converting these points to barycentric coordinates to retrieve the respective point in texture space. These barycentric coordinates lie in the range [0, 1], and therefore must be scaled by the mipmap’s width (x) and height (y) respectively. Finally, the color is found by calling the respective sample method (sample_nearest, sample_bilinear). For sample_nearest, the color is retrieved from the rounded (u, v) coordinates, and sample_bilinear uses calculations from lecture involving linear interpolation to retrieve the color at this interpolated (u, v) coordinate.</p>
+	<div align="middle">
+		<table width="90%" align="middle">
+			<td>
+				<img src="./img/bilinear.png" align="middle" style="width:100%"/>
+				<figcaption align="middle">Little to no stray pixels as shown in the pixel inspector.</figcaption>
+			</td>
+			<td>
+				<img src="./img/part1_2.png" align="middle" style="width:100%"/>
+				<figcaption align="middle">A lot of stray pixels found using the pixel inspector.</figcaption>
+			</td>
+		</table>
+	</div>
+	<br>
+	<p align="left" style="margin-left: 10%; margin-right:10%">As you can see from images above, we can see that bilinear sampling clearly does not lead to many stray pixels; however, in the nearest sampling, we can see a line of stray pixels.</p>an see from images above, we can see that bilinear sampling clearly does not lead to many stray pixels; however, in the nearest sampling, we can see a line of stray pixels.</p>
+	<h2 align="middle">Part 5: "Pixel Sampling" for Texture Mapping</h2>
+	<h4 align="left" style="margin-left: 10%; margin-right:10%">This portion of the project required us to draw a triangle with colors defined by texture mapping with the given 2D texture coordinates at each vertex and the given Texture image.</h4>
+	<p align="left" style="margin-left: 10%; margin-right:10%">Pixel sampling is the method of retrieving the color / texture at a given point of the shape’s image. With supersampling, this sampling is done at EACH supersampled point. After retrieving the specific point in texture space that is to be sampled, the color at this point can only be calculated by using the information of at least one of the nearby texels (texture pixels), as these are the fundamental coloring blocks of the texture. There are multiple methods of pixel sampling–such as nearest and bilinear–which use nearby texels differently (with differences in performance). Nearest pixel sampling samples the color from the nearest texel, whereas bilinear samples from the surrounding four texels with help of linear interpolation to get the “blend” of colors between these texels. For its implementation, we have to sample at each supersampled point in the image space, which involves converting these points to barycentric coordinates to retrieve the respective point in texture space. These barycentric coordinates lie in the range [0, 1], and therefore must be scaled by the mipmap’s width (x) and height (y) respectively. Finally, the color is found by calling the respective sample method (sample_nearest, sample_bilinear). For sample_nearest, the color is retrieved from the rounded (u, v) coordinates, and sample_bilinear uses calculations from lecture involving linear interpolation to retrieve the color at this interpolated (u, v) coordinate.</p>
+	<div align="middle">
+		<table width="90%" align="middle">
+			<td>
+				<img src="./img/bilinear.png" align="middle" style="width:100%"/>
+				<figcaption align="middle">Little to no stray pixels as shown in the pixel inspector.</figcaption>
+			</td>
+			<td>
+				<img src="./img/nearest_1.png" align="middle" style="width:100%"/>
+				<figcaption align="middle">A lot of stray pixels found using the pixel inspector.</figcaption>
+			</td>
+		</table>
+	</div>
+	<br>
 	<p align="left" style="margin-left: 10%; margin-right:10%">As you can see from images above, we can see that bilinear sampling clearly does not lead to many stray pixels; however, in the nearest sampling, we can see a line of stray pixels.</p>
-</html>
+	<div align="middle">
+		<table width="90%" align="middle">
+			<td>
+				<img src="./img/bilinear_sample_1.png" align="middle" style="width:100%"/>
+				<figcaption align="middle">Bilinear image with a sample rate of 1.</figcaption>
+			</td>
+			<td>
+				<img src="./img/nearest_sample_1.png" align="middle" style="width:100%"/>
+				<figcaption align="middle">Nearest image with a sample rate of 1.</figcaption>
+			</td>
+		</table>
+	</div>
+	<div align="middle">
+		<table width="90%" align="middle">
+			<td>
+				<img src="./img/bilinear_sample_16.png" align="middle" style="width:100%"/>
+				<figcaption align="middle">Bilinear image with a sample rate of 16.</figcaption>
+			</td>
+			<td>
+				<img src="./img/nearest_sample_16.png" align="middle" style="width:100%"/>
+				<figcaption align="middle">Nearest image with a sample rate of 16.</figcaption>
+			</td>
+		</table>
+	</div>
+	<p align="left" style="margin-left: 10%; margin-right:10%">The images with a supersample rate of 16 pixels gets rid of jaggies in the longitude and latitude lines better than the supersample rate of 1 pixel. Furthermore, Bilinear handles abrupt changes in color better than nearest pixel sampling–this is apparent in the edges between land and ocean. There will be large differences in bilinear and nearest when these sudden changes in color / high frequencies occur, as bilinear sampling does a sort of weighted average of the nearby four texels to create a smoother blend / gradient of the texel colors.</p>
+	</html>
