@@ -92,7 +92,7 @@
 		<img src="img/part4_explain.png" align="middle" width="30%"/>
 		<figcaption align="middle">The color corresponds with the distance from each vertex of R, G, and B.</figcaption>
 	</div>
-	<p align="left" style="margin-left: 10%; margin-right:10%">This portion of the project required us to draw a triangle with colors defined at the vertices and interpolated across the triangle area using barycentric interpolation. Barycentric coordinates are </p>
+	<p align="left" style="margin-left: 10%; margin-right:10%">This portion of the project required us to draw a triangle with colors defined at the vertices and interpolated across the triangle area using barycentric interpolation. Barycentric coordinates calculate the distance from a given point to each of the triangle's vertices. This allows us to assign different weights to 3 different colors as a function of distance to each vertex. </p>
 	<h4 align="left" style="margin-left: 10%; margin-right:10%">We rasterized these interpolated color triangles by following these steps:</h4>
 	<ul align="left" style="margin-left: 12%">
 		<li>Find the x and y bounds of the triangle by taking the <code>(x_min, y_min)</code> to <code>(x_max, y_max)</code> of the coordinates given.</li>
