@@ -6,6 +6,7 @@
 	<style>
 		* {
 			font-family: 'Comic Sans MS';
+			clear: both;
 		}
 		img {
 		  display: block;
@@ -18,6 +19,7 @@
 			font-weight:300;
 			font-family: 'Comic Sans MS';
 			color: '#121212';
+			clear: both;
 		}
 	</style>
 
@@ -35,6 +37,10 @@
 			<li>We then iterated through each pixel within the bounds and checked if the point was in the triangle using the inside function provided to us in triangulation.cpp.</li>
 			<li>If the point was in the triangle, we called fill_pixel on the coordinate with the color provided to us.</li>
 		</ul>
+		<div align="middle">
+			<img src="img/part1_1.png" align="middle" width="30%"/>
+			<figcaption align="middle">Aliases while using the default settings.</figcaption>
+		</div>
 		<img src ="./img/part1_1.png"><img src ="./img/part1_2.png"><img src ="./img/part1_3.png">
 		<h2 class="clear" align="middle">Part 2: Antialiasing by Supersampling</h2>
 		<p align="left" style="margin-left: 10%; margin-right:10%">This portion of the project required us to rasterize a triangle by using the sampling methods described in class. We took sample rate amount of samples where took took sqrt(sample_rate) x-coordinate samples and sqrt(sample_rate) y-coordinate samples. We used a point in triangle test on each sample point within the bounds given to us. Each sample's coordinates were tested using the coordinate plus <code>((0.5 + sample_number_x)/sqrt(sample_rate), (0.5 + sample_number_y)/sqrt(sample_rate)).</code></p>
