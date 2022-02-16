@@ -26,6 +26,8 @@
 		<h1 align="middle">Project 1: Rasterizer</h1>
 		<h2 align ="middle">Jonathan Kim and Steven Christopher</h2>
 		<img align ="middle"src="./img/lion.jpg" style="width:30%">
+		<br>
+		<br>
 		<h2 align="middle">Part 1: Drawing Single-Color Triangles</h2>
 		<p align="left" style="margin-left: 10%; margin-right:10%">This portion of the project required us to rasterize a triangle. We used a point in triangle test on each sample point within the bounds given to us. Each sample's coordinates were tested using the coordinate plus <code>(0.5, 0.5)</code>. Our algorithm is no waorse than one that checks each sample within the bounding box of the triangle because that is exactly what we do. We check each sample within the bounding box of the triangle. However, we made this faster by taking advantage of the cache. We reversed the ordering of our for loops start with y-coordinates and then moving along each x.</p>
 		<h4 align="left" style="margin-left: 10%; margin-right:10%">We rasterized triangles by following these steps:</h4>
@@ -50,6 +52,8 @@
 				</td>
 			</table>
 		</div>
+		<br>
+		<br>
 		<h2 align="middle">Part 2: Antialiasing by Supersampling</h2>
 		<p align="left" style="margin-left: 10%; margin-right:10%">This portion of the project required us to rasterize a triangle by using the sampling methods described in class. We took sample rate amount of samples where took took sqrt(sample_rate) x-coordinate samples and sqrt(sample_rate) y-coordinate samples. We used a point in triangle test on each sample point within the bounds given to us. Each sample's coordinates were tested using the coordinate plus <code>((0.5 + sample_number_x)/sqrt(sample_rate), (0.5 + sample_number_y)/sqrt(sample_rate)).</code></p>
 		<h4 align="left" style="margin-left: 10%; margin-right:10%">We implemented supersampling by following these steps:</h4>
@@ -79,6 +83,8 @@
 				</td>
 			</table>
 		</div>
+		<br>
+		<br>
 		<h2 align="middle">Part 3: Transforms</h2>
 		<p align="left" style="margin-left: 10%; margin-right:10%">This portion of the project required us to implement 3 different transforms, translate, scale, and rotate. </p>
 		<div align="middle">
@@ -87,6 +93,8 @@
 		</div>
 		<p align="left" style="margin-left: 10%; margin-right:10%">We made cube man stand at the position of attention where he keeps his arms down and legs straight. In fact if he had feet, they would be at a 45 degree angle; however he doesn't. He is trying his best to keep his bearing. :(</p>
 	</body>
+	<br>
+	<br>
 	<h2 align="middle">Part 4: Barycentric Coordinates</h2>
 	<div align="middle">
 		<img src="img/part4_explain.png" align="middle" width="30%"/>
