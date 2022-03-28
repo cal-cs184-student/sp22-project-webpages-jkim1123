@@ -113,7 +113,7 @@
 	<p align="left" style="margin-left: 10%; margin-right:10%">To implement importance sampling, we had to sample every light source in the scene by looping through all lights. If the light source was a delta light, we only needed to sample once since all the samples are the same. If not, we sampled ns_area_light amount of times. The sampler gives us the incoming radiance, the pdf, direction, and distance. So by using this information given to us, we can create a ray to test if it doesn't' intersect the BVH. We had to convert the direction vector from world to object coordinates. If there is no intersection, we summed up the irradiance by using the same calculation as in hemisphere sampling. We finally divided the sum by the number of samples we used.</p>
 	<p align="left" style="margin-left: 10%; margin-right:10%">In the pictures above, we can see the difference between hemisphere sasmpling and importance sampling when using the same amount of samples and light rays. There is more noise in the hemisphere sampling due to the fact that we take samples in all directions around a point, so only some rays will actually point towards a light source. This leads to the noisy spots along our scene. However, importace sampling will give more priority to samples that actually produce results. By only using samples from the light sources given to us, each ray will produce a value unlike hemisphere sampling. Therefore, our importance sampling image will be less noisy than that of the hemisphere sampling.</p>
 	<div align="middle">
-		<table width="90%" align="middle">
+		<table width="50%" align="middle">
 			<td>
 				<img src="./img/walle_1l.png" align="middle" style="width:100%" />
 				<figcaption align="middle">1 sample, 1 light ray</figcaption>
@@ -126,7 +126,7 @@
 		</table>
 	</div>
 	<div align="middle">
-		<table width="90%" align="middle">
+		<table width="50%" align="middle">
 			<td>
 				<img src="./img/walle_16l.png" align="middle" style="width:100%" />
 				<figcaption align="middle">1 sample, 16 light rays</figcaption>
@@ -166,7 +166,7 @@
 		To implement global illumination, we had to fill out the at_least_one_bounce_radiance function. We did this by checking the max_ray_depth first. If it was 0, then we'd return a 0 vector. If it was one, we would just return the one_bounce_radiance as it is depth of 1. If it was greater than one, we would need to use recursion and Russian Roulette to randomly terminate the sampling sequence. We then construct a ray from the current point and check if it intersects the BVH. We also make sure that the depth of the ray is equivalent to the input ray's depth - 1. If it doesn't hit, we stop, but in the case where is hits and pdf is greater than 0, we recurse using the ray we just found and summing up the resulting radiance like how we calculated in hemisphere and importance sampling. For each iteration, we had a probability of 0.7 of the sample being continued meaning that the sample wasn't continued 30% of the time.
 	</p>
 	<div align="middle">
-		<table width="90%" align="middle">
+		<table width="75%" align="middle">
 			<td>
 				<img src="./img/spheres_direct.png" align="middle" style="width:100%" />
 				<figcaption align="middle">Direct Lighting Only</figcaption>
@@ -184,7 +184,7 @@
 	<br />
 	<br />
 	<div align="middle">
-		<table width="90%" align="middle">
+		<table width="75%" align="middle">
 			<td>
 				<img src="./img/bunny_0m.png" align="middle" style="width:100%" />
 				<figcaption align="middle">Max Ray Depth 0</figcaption>
@@ -214,7 +214,7 @@
 	<br />
 	<br />
 	<div align="middle">
-		<table width="90%" align="middle">
+		<table width="80%" align="middle">
 			<td>
 				<img src="./img/spheres_1s.png" align="middle" style="width:100%" />
 				<figcaption align="middle">1 Sample</figcaption>
@@ -234,7 +234,7 @@
 		</table>
 	</div>
 	<div align="middle">
-		<table width="90%" align="middle">
+		<table width="70%" align="middle">
 			<td>
 				<img src="./img/spheres_16s.png" align="middle" style="width:100%" />
 				<figcaption align="middle">16 Samples</figcaption>
