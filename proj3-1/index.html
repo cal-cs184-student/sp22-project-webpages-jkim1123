@@ -267,7 +267,7 @@
 		However there’s one issue: calculating the sample mean, variance, and variable I for EACH sample is EXTREMELY expensive. To deal with this, we have a constant samplesPerBatch, which signifies that we will only check if a pixel has converged if we are currently on the ith sample such that i is a multiple of samplesPerBatch. This is set to 32 by default, so we check this every 32 samples. Therefore, it is during this condition being true that we check if variable I is less than or equal to maxTolerance * mu, and if so, the respective pixel in the sampleBuffer is updated with the Monte Carlo Estimate over the total number of samples SO FAR, as well as the sampleCountBuffer being updated with the total number of samples so far.
 	</p>
 	<div align="middle">
-		<table width="90%" align="middle">
+		<table width="60%" align="middle">
 			<td>
 				<img src="./img/bunny_p5.png" align="middle" style="width:100%" />
 				<figcaption align="middle">Render</figcaption>
