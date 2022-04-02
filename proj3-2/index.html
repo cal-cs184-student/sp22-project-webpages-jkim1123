@@ -1,7 +1,151 @@
-<html>
-	<head>
-	</head>
-	<body>
-		Project 3-2 here
-	</body>
-</html>
+<html lang="en">
+<head>
+	<title>CS 184 Pathtracer</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="text/html">
+	<style>
+		* {
+			font-family: 'Comic Sans MS';
+		}
+
+		img {
+			display: block;
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+        body {
+            text-align: left;
+            font-weight: 300;
+            font-family: 'Comic Sans MS';
+            color: '#121212';
+        }
+	</style>
+
+</head>
+<body style="background-color: #7e4a4e;">
+	<h1 align="middle">CS 184: Computer Graphics and Imaging</h1>
+	<h1 align="middle">Project 3-2: Pathtracer</h1>
+	<h2 align="middle">Jonathan Kim and Steven Christopher</h2>
+	<img align="middle" src="./img/21_1.jpg" style="width:80%">
+	<br>
+	<br>
+	<h2 align="middle">Overview</h2>
+	<h4 align="left" style="margin-left: 10%; margin-right:10%">In this project, we implemented additional features to the ray tracer that we created in project 3-1. We had to render more complicated materials such as glass and mirros as well as include depth of field effects. Since this project only required us to implement 2 out of the 4 parts, we chose to implement parts 1 and 4.</h4>
+	<br>
+	<br>
+	<h2 align="middle">Part 1:Mirror and Glass Materials</h2>
+	<h4 align="left" style="margin-left: 10%; margin-right:10%">This portion of the project required us to implement functions that modeled the reflection and refraction of rays which in turn allows us to model and render mirror and glass like surfaces.</h4>
+	<div align="middle">
+		<table width="90%" align="middle">
+			<td>
+				<img src="./img/m0.png" align="middle" style="width:100%" />
+				<figcaption align="middle">-m 0</figcaption>
+			</td>
+			<td>
+				<img src="./img/m1.png" align="middle" style="width:100%" />
+				<figcaption align="middle">-m 1</figcaption>
+			</td>
+			<td>
+				<img src="./img/m2.png" align="middle" style="width:100%" />
+				<figcaption align="middle">-m 2</figcaption>
+			</td>
+			<td>
+				<img src="./img/m3.png" align="middle" style="width:100%" />
+				<figcaption align="middle">-m 3</figcaption>
+			</td>
+		</table>
+	</div>
+	<div align="middle">
+		<table width="70%" align="middle">
+			<td>
+				<img src="./img/m4.png" align="middle" style="width:100%" />
+				<figcaption align="middle">-m 4</figcaption>
+			</td>
+			<td>
+				<img src="./img/m5.png" align="middle" style="width:100%" />
+				<figcaption align="middle">-m 5</figcaption>
+			</td>
+			<td>
+				<img src="./img/m100.png" align="middle" style="width:100%" />
+				<figcaption align="middle">-m 100</figcaption>
+			</td>
+		</table>
+	</div>
+	
+	<ul align="left" style="margin-left: 12%">
+		<li>Max ray depth 0: only the emission from the light source in the ceiling is visible.</li>
+		<li>Max ray depth 1: now a ray is bouncing directly from the light source to the walls and the spheres. Due to this, only the reflection of the light source is visible on the spheres</li>
+		<li>Max ray depth 2: the ray from the light source now bounces off the surface of the spheres and thus the left sphere now reflects an image of the scene including the walls around it and the adjacent sphere</li>
+		<li>Max ray depth 3: Reflections off the right sphere are now visible. Specifically, views of the blue wall and the ceiling are seen in the right solid sphere, with a caustic light below it. One weird observance is that in the reflection on the left sphere, the view of the adjacent sphere on the right is black. Furthermore, the reflection of the ceiling is more illuminated in the left sphere with the addition of a bounce.</li>
+		<li>Max ray depth 4: Noticeably, the reflection of the right sphere on the left sphere is not black anymore, one can see the reflective quality of it. Additionally, there is a spot of light now bouncing from the right sphere to the lower right of the blue wall.</li>
+		<li>Max ray depth 5: This render is overall brighter than the previous render of max ray depth 4. One can also notice that the caustic light underneath the right sphere can be seen in the reflection on the left sphere.</li>
+		<li>Max ray depth 100: This render is again brighter than the previous render of max ray depth 5. This time, the edges of the spheres are softer. In other words there is a less drastic change from the previously dark outlined edge of the sphere to the background walls.</li>
+	</ul>
+	<p align="left" style="margin-left: 10%; margin-right:10%">
+		As we increment the ray depth, we can see more and more features of the complicated materials being rendered. From 1 to 2 bounces we can see that the mirror surface is now reflecting and appearing as it should and that after 3 bounces the glass material looks transparent. However, from the 3rd to 4th bounce we can see that the glass ball's reflection on the mirror turns from black to how it actually should look when reflected off a mirror. With each additional bounce, the glass becomes more transparent and the mirror material seems to become more reflective.
+	</p>
+	<br>
+	<br>
+	<h2 align="middle">Part 4: Global Illumination</h2>
+	<h4 align="left" style="margin-left: 10%; margin-right:10%">This portion of the project required us to implement a function that allows us to simulate a thin lens to enable the depth of field effect.</h4>
+	<p align="left" style="margin-left: 10%; margin-right:10%">
+		In the pinhole camera model, all of the subject which lies within the camera's view is in focus. Mechanically, this means that the radiance of a pixel in the image is sent towards the camera with nothing in between its travel. 
+	</p>
+	<p align="left" style="margin-left: 10%; margin-right:10%">
+		How this contrasts with the thin-lens camera model is that there now exists a lens in between the image and the camera. This means that the ray sent from the image to the camera is first refracted through the lens, where the refracted ray then hits the camera. Furthermore, with a thin-lens camera model there is now a plane of focus which controls whether or not the image is in focus or not–if the object in the scene is between the plane of focus and the lens then it is in focus.
+	</p>
+	<div align="middle">
+		<table width="75%" align="middle">
+			<td>
+				<img src="./img/d2.9.png" align="middle" style="width:100%" />
+				<figcaption align="middle">d = 2.9</figcaption>
+			</td>
+			<td>
+				<img src="./img/d3.1.png" align="middle" style="width:100%" />
+				<figcaption align="middle">d = 3.1</figcaption>
+			</td>
+			<td>
+				<img src="./img/d3.3.png" align="middle" style="width:100%" />
+				<figcaption align="middle">d = 3.3</figcaption>
+			</td>
+			<td>
+				<img src="./img/d3.5.png" align="middle" style="width:100%" />
+				<figcaption align="middle">d = 3.5</figcaption>
+			</td>
+		</table>
+	</div>
+	<br />
+	<br />
+	<div align="middle">
+		<table width="80%" align="middle">
+			<td>
+				<img src="./img/a_.02.png" align="middle" style="width:100%" />
+				<figcaption align="middle">aperture = 0.02</figcaption>
+			</td>
+			<td>
+				<img src="./img/a.09.png" align="middle" style="width:100%" />
+				<figcaption align="middle">aperture = 0.09</figcaption>
+			</td>
+			<td>
+				<img src="./img/a.16.png" align="middle" style="width:100%" />
+				<figcaption align="middle">aperture = 0.16</figcaption>
+			</td>
+			<td>
+				<img src="./img/a.23.png" align="middle" style="width:100%" />
+				<figcaption align="middle">aperture = 0.23</figcaption>
+			</td>
+		</table>
+	</div>
+	<br>
+	<br>
+	<p align="left" style="margin-left: 10%; margin-right:10%">
+		This project went really smooth compared to project 3-1. We figured out how to render using hive machines and were able to do much of the renders really fast for parts 1 and 4 (plus the renders themselves weren't incredibly heavy/complex anyway). Not many bugs were encountered while implementing these parts, and by debugging each other's code we were able to get a working solution within hours. Overall, learning how to take advantage of remote servers to render our scenes really cut down the time for our writeup, which we had issues with on the last project.
+	</p>
+	<p align="left" style="margin-left: 10%; margin-right:10%">
+		In terms of collaboration, we first tried brainstorming ideas for each portion of the project and then broke down the responsibilities by parts. In terms of coding, since the project only required two parts, we split the tasks so that each person takes one part after the initial brainstorm / pseudocode session. Additionally, since Steven's computer was an M1 Macbook, the little debugging we had to do was mainly done through Jonathan. Steven wrote code for part 1 tasks 1, 2, and 3, and was able to utilize the hive machines to complete all of our renders required for the writeup. Jonathan implemented part 2 and part 1 task 4 and helped debug part 1.
+	</p>
+
+	<h4 align="left" style="margin-left: 10%; margin-right:10%">https://cal-cs184-student.github.io/sp22-project-webpages-jkim1123/</h4>
+	<br>
+	<br>
