@@ -269,17 +269,6 @@
 	</div>
 	<br />
 	<br />
-	<p align="left" style="margin-left: 10%; margin-right:10%">
-		With ks=500, the cloth seems to adhere to the surface of the sphere the most and there seem to be more folds which are thinner.
-	</p>
-	<p align="left" style="margin-left: 10%; margin-right:10%">
-		With ks=5000, the cloth's adherence to the sphere is clearly that which Is in between the two other images with lower and higher ks values. Its folds don't flare out as much.
-	</p>
-	<p align="left" style="margin-left: 10%; margin-right:10%">
-		With ks=50000, the cloth looks a bit "stiff." It doesn't seem to mold around the sphere as much as it would with lower ks. Its folds fan out more and are wider than the other ks values.
-	</p>
-	<br>
-	<br>
 
 	<div align="middle">
 		<table width="80%" align="middle">
@@ -358,7 +347,7 @@
 
 		</table>
 	</div>
-	<p align="left" style="margin-left: 10%; margin-right:10%">With higher density, the cloth tends to fall straight to the ground without rolling out as much. It reaches resting state a bit faster than lower density because it seems like it takes more energy for the cloth to move after collapsing onto itself. Contrarily, with low density the cloth seems "lighter" and has more freedom to move. Therefore, in this case the cloth actually rolls out easily and doesn’t clump up as much to its counterpart.</p>
+	<p align="left" style="margin-left: 10%; margin-right:10%">With higher density, the cloth tends to fall straight to the ground without rolling out as much. It reaches resting state a bit faster than lower density because it seems like it takes more energy for the cloth to move after collapsing onto itself. Contrarily, with low density the cloth seems "lighter" and has more freedom to move. Therefore, in this case the cloth actually rolls out easily and doesn’t clump up as much as its counterpart.</p>
 	<br />
 	<br />
 	<h2 align="middle">Part 5:Shaders</h2>
@@ -377,7 +366,7 @@
 		</table>
 	</div>
 	<p align="left" style="margin-left: 10%; margin-right:10%">
-		A shader program lightens the load on the CPU in regards to rendering by having its tasks done in parallel on the GPU. A shader program is comprised of its vertex and fragment shaders, which work together in a pipeline: the vertex shaders manipulate the vertices it receives as inputs and outputs the results of these transformations to the fragment shaders who texture the model�whether it be through lighting or attaching materials to it.
+		A shader program lightens the load on the CPU in regards to rendering by having its tasks done in parallel on the GPU. A shader program is comprised of its vertex and fragment shaders, which work together in a pipeline: the vertex shaders manipulate the vertices it receives as inputs and outputs the results of these transformations to the fragment shaders who texture the model-whether it be through lighting or attaching materials to it.
 	</p>
 	<p align="left" style="margin-left: 10%; margin-right:10%">
 		Blinn-Phong makes use of three components of lighting to create the realistic shading of an object. These components are ambient shading (which is simply a constant amount of color affecting the scene), diffuse shading (appearance of an object no matter where in space it is viewed), and specular shading (which is the glare that varies on an object as a result of light intensity changing with the point of observation). The addition of these three components results in the final result of Blinn-Phong shading, creating a more realistic view of the object.
