@@ -1,6 +1,6 @@
 <html lang="en">
 <head>
-	<title>CS 184 Pathtracer</title>
+	<title>CS 184 Clothsim</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="text/html">
 	<style>
@@ -36,8 +36,11 @@
 	<br>
 	<h2 align="middle">Part 1:Masses and Springs</h2>
 	<h4 align="left" style="margin-left: 10%; margin-right:10%">This portion of the project required us to implement a function that when given the cloth's parameters will create a grid of point masses and springs that will help define the cloth.</h4>
+	<p align="left" style="margin-left: 10%; margin-right:10%">
+		We followed the instructions provided to us in the spec where we created the point masses vector for the cloth while also keeping in mind whether or not the (x,y) index is within the cloth's pinned parameter. We also created structural, shearing, and bending springs and their interactions between different point masses at different positions in the grid according to the spec.
+	</p>
 	<div align="middle">
-		<table width="90%" align="middle">
+		<table width="80%" align="middle">
 			<td>
 				<img src="./img/wireframe-1.png" align="middle" style="width:200px" style="height: 200px" />
 				<figcaption align="middle">Overall Wireframe</figcaption>
@@ -61,10 +64,10 @@
 	<h2 align="middle">Part 2:Simulation via Numerical Integration</h2>
 	<h4 align="left" style="margin-left: 10%; margin-right:10%">This portion of the project required us to implement a function that integrates the physical equations of motion in order to apply the forces on our cloth's point masses to figure out how they move from one time step to the next.</h4>
 	<p align="left" style="margin-left: 10%; margin-right:10%">
-		We followed the instructions provided to us in the spec where we created the point masses vector for the cloth while also keeping in mind whether or not the (x,y) index is within the cloth's pinned parameter. We also created structural, shearing, and bending springs and their interactions between different point masses at different positions in the grid according to the spec.
+		We followed the instructions provided to us in the spec where we calculated the total force acting on each point mass and used Verlet integration to compute the new point mass positions. We also added a constrainment to help keep springs from being unreasonably deformed.
 	</p>
 	<div align="middle">
-		<table width="90%" align="middle">
+		<table width="80%" align="middle">
 			<td>
 				<img src="./img/default1.png" align="middle" style="width:100%" />
 				<figcaption align="middle">Default Damping = 0.2%</figcaption>
@@ -120,7 +123,7 @@
 		We scaled the correction by (1 - friction) before updating the position and last_position.
 	</p>
 	<div align="middle">
-		<table width="90%" align="middle">
+		<table width="80%" align="middle">
 			<td>
 				<img src="./img/ks500-1.png" align="middle" style="width:100%" />
 				<figcaption align="middle">ks = 500</figcaption>
@@ -133,7 +136,7 @@
 		</table>
 	</div>
 	<div align="middle">
-		<table width="90%" align="middle">
+		<table width="80%" align="middle">
 			<td>
 				<img src="./img/ks5000-1.png" align="middle" style="width:100%" />
 				<figcaption align="middle">ks = 5000</figcaption>
@@ -146,7 +149,7 @@
 		</table>
 	</div>
 	<div align="middle">
-		<table width="90%" align="middle">
+		<table width="80%" align="middle">
 			<td>
 				<img src="./img/ks50000-1.png" align="middle" style="width:100%" />
 				<figcaption align="middle">ks = 50000</figcaption>
@@ -192,7 +195,7 @@
 		We did this by utilizing spatial hashing. At each time step, we crated a hash table that maps floats to a vector of PointMasses. This float represents the 3D box volume and the vector contains all the PointMasses within that volume. With the map, we just have to loop through the point masses and look up if they share the same 3D volume. If they do, then apply a correctional force.
 	</p>
 	<div align="middle">
-		<table width="90%" align="middle">
+		<table width="80%" align="middle">
 			<td>
 				<img src="./img/start1-1.png" align="middle" style="width:100%" />
 				<figcaption align="middle">Start</figcaption>
@@ -208,7 +211,7 @@
 		</table>
 	</div>
 	<div align="middle">
-		<table width="90%" align="middle">
+		<table width="80%" align="middle">
 			<td>
 				<img src="./img/start1-2.png" align="middle" style="width:100%" />
 				<figcaption align="middle">Start</figcaption>
@@ -254,7 +257,7 @@
 	<br>
 	<br>
 	<div align="middle">
-		<table width="90%" align="middle">
+		<table width="80%" align="middle">
 			<td>
 				<img src="./img/mid1-1.png" align="middle" style="width:100%" />
 				<figcaption align="middle">Middle, ks = 10</figcaption>
@@ -276,7 +279,7 @@
 		</table>
 	</div>
 	<div align="middle">
-		<table width="90%" align="middle">
+		<table width="80%" align="middle">
 			<td>
 				<img src="./img/midhighks-1.png" align="middle" style="width:100%" />
 				<figcaption align="middle">Middle, ks = 50000</figcaption>
@@ -315,13 +318,13 @@
 		</table>
 	</div>
 	<p align="left" style="margin-left: 10%; margin-right:10%">
-		A shader program lightens the load on the CPU in regards to rendering by having its tasks done in parallel on the GPU. A shader program is comprised of its vertex and fragment shaders, which work together in a pipeline: the vertex shaders manipulate the vertices it receives as inputs and outputs the results of these transformations to the fragment shaders who texture the model–whether it be through lighting or attaching materials to it.
+		A shader program lightens the load on the CPU in regards to rendering by having its tasks done in parallel on the GPU. A shader program is comprised of its vertex and fragment shaders, which work together in a pipeline: the vertex shaders manipulate the vertices it receives as inputs and outputs the results of these transformations to the fragment shaders who texture the modelï¿½whether it be through lighting or attaching materials to it.
 	</p>
 	<p align="left" style="margin-left: 10%; margin-right:10%">
 		Blinn-Phong makes use of three components of lighting to create the realistic shading of an object. These components are ambient shading (which is simply a constant amount of color affecting the scene), diffuse shading (appearance of an object no matter where in space it is viewed), and specular shading (which is the glare that varies on an object as a result of light intensity changing with the point of observation). The addition of these three components results in the final result of Blinn-Phong shading, creating a more realistic view of the object.
 	</p>
 	<div align="middle">
-		<table width="90%" align="middle">
+		<table width="80%" align="middle">
 			<td>
 				<img src="./img/ambient.png" align="middle" style="width:200px" style="height: 200px" />
 				<figcaption align="middle">Ambient</figcaption>
@@ -342,7 +345,7 @@
 		</table>
 	</div>
 	<div align="middle">
-		<table width="90%" align="middle">
+		<table width="80%" align="middle">
 			<td>
 				<img src="./img/bump_sphere.png" align="middle" style="width:300px" style="height: 300px" />
 				<figcaption align="middle">Bump Sphere</figcaption>
@@ -365,7 +368,7 @@
 	</p>
 
 	<div align="middle">
-		<table width="90%" align="middle">
+		<table width="80%" align="middle">
 			<td>
 				<img src="./img/16bump.png" align="middle" style="width:200px" style="height: 200px" />
 				<figcaption align="middle">16 Bump</figcaption>
@@ -385,10 +388,10 @@
 		</table>
 	</div>
 	<p align="left" style="margin-left: 10%; margin-right:10%">
-		For bumps, the change in coarseness does not seem to provide any difference in appearance. On the other hand, there are stark differences for displacement: lower coarseness almost has the same effect as downsampling the mesh, or lessening the complexity of the model’s appearance. Higher coarseness allows for more degrees of freedom for the vertices of the model to change, while it seems that there are less vertices to be displaced when the sphere has lower coarseness and therefore the model looks downsampled.
+		For bumps, the change in coarseness does not seem to provide any difference in appearance. On the other hand, there are stark differences for displacement: lower coarseness almost has the same effect as downsampling the mesh, or lessening the complexity of the modelï¿½s appearance. Higher coarseness allows for more degrees of freedom for the vertices of the model to change, while it seems that there are less vertices to be displaced when the sphere has lower coarseness and therefore the model looks downsampled.
 	</p>
 	<div align="middle">
-		<table width="90%" align="middle">
+		<table width="80%" align="middle">
 			<td>
 				<img src="./img/basilica1.png" align="middle" style="width:300px" style="height: 300px" />
 				<figcaption align="middle">Mirror Shader Basilica 1</figcaption>
