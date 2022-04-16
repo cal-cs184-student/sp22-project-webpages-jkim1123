@@ -1,7 +1,414 @@
-<html>
-	<head>
-	</head>
-	<body>
-		Project 4 here
-	</body>
-</html>
+<html lang="en">
+<head>
+	<title>CS 184 Pathtracer</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="text/html">
+	<style>
+		* {
+			font-family: 'Comic Sans MS';
+		}
+
+		img {
+			display: block;
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		body {
+			text-align: left;
+			font-weight: 300;
+			font-family: 'Comic Sans MS';
+			color: '#121212';
+		}
+	</style>
+
+</head>
+<body style="background-color: #49819f; ">
+	<h1 align="middle">CS 184: Computer Graphics and Imaging</h1>
+	<h1 align="middle">Project 4: Clothsim</h1>
+	<h2 align="middle">Jonathan Kim and Steven Christopher</h2>
+	<img align="middle" src="./img/clothsim.png" style="width:80%">
+	<br>
+	<br>
+	<h2 align="middle">Overview</h2>
+	<h4 align="left" style="margin-left: 10%; margin-right:10%">In this project, we implemented a real-time simulation of a cloth using a point mass and spring based system using a grid of springs and masses as well as hash maps to help optimize collision algorithms. We built the data structures required to represent the cloth, define and apply physical constraints on them, and apply numerical integration to simulate the way the cloth moves over time. Additionally, we implemented collisions with other objects as well as with the cloth itself.</h4>
+	<br>
+	<br>
+	<h2 align="middle">Part 1:Masses and Springs</h2>
+	<h4 align="left" style="margin-left: 10%; margin-right:10%">This portion of the project required us to implement a function that when given the cloth's parameters will create a grid of point masses and springs that will help define the cloth.</h4>
+	<div align="middle">
+		<table width="90%" align="middle">
+			<td>
+				<img src="./img/wireframe-1.png" align="middle" style="width:200px" style="height: 200px" />
+				<figcaption align="middle">Overall Wireframe</figcaption>
+			</td>
+			<td>
+				<img src="./img/wireframe-2.png" align="middle" style="width:200px" style="height: 200px" />
+				<figcaption align="middle">With All Constraints</figcaption>
+			</td>
+			<td>
+				<img src="./img/wireframe-3.png" align="middle" style="width:200px" style="height: 200px" />
+				<figcaption align="middle">With Only Shearing Constraints</figcaption>
+			</td>
+			<td>
+				<img src="./img/wireframe-4.png" align="middle" style="width:200px" style="height: 200px" />
+				<figcaption align="middle">Without Any Shearing Constraints</figcaption>
+			</td>
+		</table>
+	</div>
+	<br>
+	<br>
+	<h2 align="middle">Part 2:Simulation via Numerical Integration</h2>
+	<h4 align="left" style="margin-left: 10%; margin-right:10%">This portion of the project required us to implement a function that integrates the physical equations of motion in order to apply the forces on our cloth's point masses to figure out how they move from one time step to the next.</h4>
+	<p align="left" style="margin-left: 10%; margin-right:10%">
+		We followed the instructions provided to us in the spec where we created the point masses vector for the cloth while also keeping in mind whether or not the (x,y) index is within the cloth's pinned parameter. We also created structural, shearing, and bending springs and their interactions between different point masses at different positions in the grid according to the spec.
+	</p>
+	<div align="middle">
+		<table width="90%" align="middle">
+			<td>
+				<img src="./img/default1.png" align="middle" style="width:100%" />
+				<figcaption align="middle">Default Damping = 0.2%</figcaption>
+			</td>
+			<td>
+				<img src="./img/default2.png" align="middle" style="width:100%" />
+				<figcaption align="middle">Default Damping = 0.2%</figcaption>
+			</td>
+			<td>
+				<img src="./img/high1.png" align="middle" style="width:100%" />
+				<figcaption align="middle">High Damping = 0.758%</figcaption>
+			</td>
+			<td>
+				<img src="./img/high2.png" align="middle" style="width:100%" />
+				<figcaption align="middle">High Damping = 0.758%</figcaption>
+			</td>
+		</table>
+	</div>
+	<div align="middle">
+		<table width="75%" align="middle">
+			<td>
+				<img src="./img/low1.png" align="middle" style="width:100%" />
+				<figcaption align="middle">Low Damping = 0.103%</figcaption>
+			</td>
+			<td>
+				<img src="./img/low2.png" align="middle" style="width:100%" />
+				<figcaption align="middle">Low Damping = 0.103%</figcaption>
+			</td>
+			<td>
+				<img src="./img/low3.png" align="middle" style="width:100%" />
+				<figcaption align="middle">Low Damping = 0.103%</figcaption>
+			</td>
+
+		</table>
+	</div>
+	<p align="left" style="margin-left: 10%; margin-right:10%">
+		With a low ks, the cloth droops downwards more (with the folds being more towards the bottom corners of the cloth). On the other hand, a high ks causes the cloth to hang more tautly (with the folds being more towards the top of the cloth).
+	</p>
+	<p align="left" style="margin-left: 10%; margin-right:10%">
+		Changing density seems to have opposite behavior to changing ks. high density acts like low ks where the cloth droops downwards more, which is evidently shown through the more pronounced curve in the middle of the top edge of the cloth. Likewise, high density acts the same as decreasing ks, looking to be more taut with a clear fold towards the top of the cloth.
+	</p>
+	<p align="left" style="margin-left: 10%; margin-right:10%">
+		Damping doesn't change the appearance of the cloth after it is in more of a steady state. However, increasing the damping slows down the fall of the cloth during simulations, as if the cloth is lighter as damping is higher. Low damping causes the cloth to drop faster. If the damping is low enough, the heavy-seeming cloth will actually sway back and forth after falling before reaching the still position.
+	</p>
+	<br>
+	<br>
+	<h2 align="middle">Part 3:Handling Collisions with Other Objects</h2>
+	<h4 align="left" style="margin-left: 10%; margin-right:10%">This portion of the project required us to implement support for the cloth to collide with other objects.</h4>
+	<p align="left" style="margin-left: 10%; margin-right:10%">
+		For spheres and planes, if a point mass is inside the sphere or intersecting the plane, we want to update its position outside of the sphere or on the same side of the plane.
+		WE check if the point mass is inside the sphere by checking the distance the point mass is away from the center or if the dot product of the last position and current position failed the line test.
+		Next, we created a correction vector using the direction and the sphere's radius, or in the case of a plane, the dot product and the normal.
+		We scaled the correction by (1 - friction) before updating the position and last_position.
+	</p>
+	<div align="middle">
+		<table width="90%" align="middle">
+			<td>
+				<img src="./img/ks500-1.png" align="middle" style="width:100%" />
+				<figcaption align="middle">ks = 500</figcaption>
+			</td>
+			<td>
+				<img src="./img/ks500-2.png" align="middle" style="width:100%" />
+				<figcaption align="middle">ks = 500</figcaption>
+			</td>
+
+		</table>
+	</div>
+	<div align="middle">
+		<table width="90%" align="middle">
+			<td>
+				<img src="./img/ks5000-1.png" align="middle" style="width:100%" />
+				<figcaption align="middle">ks = 5000</figcaption>
+			</td>
+			<td>
+				<img src="./img/ks5000-2.png" align="middle" style="width:100%" />
+				<figcaption align="middle">ks = 5000</figcaption>
+			</td>
+
+		</table>
+	</div>
+	<div align="middle">
+		<table width="90%" align="middle">
+			<td>
+				<img src="./img/ks50000-1.png" align="middle" style="width:100%" />
+				<figcaption align="middle">ks = 50000</figcaption>
+			</td>
+			<td>
+				<img src="./img/ks50000-2.png" align="middle" style="width:100%" />
+				<figcaption align="middle">ks = 50000</figcaption>
+			</td>
+
+		</table>
+	</div>
+	<p align="left" style="margin-left: 10%; margin-right:10%">
+		With ks=500, the cloth seems to adhere to the surface of the sphere the most and there seem to be more folds which are thinner.
+	</p>
+	<p align="left" style="margin-left: 10%; margin-right:10%">
+		With ks=5000, the cloth's adherence to the sphere is clearly that which Is in between the two other images with lower and higher ks values. Its folds don't flare out as much.
+	</p>
+	<p align="left" style="margin-left: 10%; margin-right:10%">
+		With ks=50000, the cloth looks a bit "stiff." It doesn't seem to mold around the sphere as much as it would with lower ks. Its folds fan out more and are wider than the other ks values.
+	</p>
+	<div align="middle">
+		<table width="75%" align="middle">
+			<td>
+				<img src="./img/peaceful1.png" align="middle" style="width:300px" style="height: 300px" />
+				<figcaption align="middle">Peacefully at Rest</figcaption>
+			</td>
+			<td>
+				<img src="./img/peaceful2.png" align="middle" style="width:300px" style="height: 300px" />
+				<figcaption align="middle">Green Cloth on Green Plane</figcaption>
+			</td>
+			<td>
+				<img src="./img/peaceful3.png" align="middle" style="width:300px" style="height: 300px" />
+				<figcaption align="middle">Where's the Cloth?</figcaption>
+			</td>
+
+		</table>
+	</div>
+	<br>
+	<br>
+	<h2 align="middle">Part 4:Handling Self-Collisions</h2>
+	<h4 align="left" style="margin-left: 10%; margin-right:10%">This portion of the project required us to implement support for the cloth to collide with itself and avoiding strange clipping behavior.</h4>
+	<p align="left" style="margin-left: 10%; margin-right:10%">
+		We did this by utilizing spatial hashing. At each time step, we crated a hash table that maps floats to a vector of PointMasses. This float represents the 3D box volume and the vector contains all the PointMasses within that volume. With the map, we just have to loop through the point masses and look up if they share the same 3D volume. If they do, then apply a correctional force.
+	</p>
+	<div align="middle">
+		<table width="90%" align="middle">
+			<td>
+				<img src="./img/start1-1.png" align="middle" style="width:100%" />
+				<figcaption align="middle">Start</figcaption>
+			</td>
+			<td>
+				<img src="./img/start2-1.png" align="middle" style="width:100%" />
+				<figcaption align="middle">Middle</figcaption>
+			</td>
+			<td>
+				<img src="./img/start3-1.png" align="middle" style="width:100%" />
+				<figcaption align="middle">End</figcaption>
+			</td>
+		</table>
+	</div>
+	<div align="middle">
+		<table width="90%" align="middle">
+			<td>
+				<img src="./img/start1-2.png" align="middle" style="width:100%" />
+				<figcaption align="middle">Start</figcaption>
+			</td>
+			<td>
+				<img src="./img/start2-2.png" align="middle" style="width:100%" />
+				<figcaption align="middle">Middle</figcaption>
+			</td>
+			<td>
+				<img src="./img/start3-2.png" align="middle" style="width:100%" />
+				<figcaption align="middle">End</figcaption>
+			</td>
+		</table>
+	</div>
+	<br />
+	<br />
+	<p align="left" style="margin-left: 10%; margin-right:10%">
+		With ks=500, the cloth seems to adhere to the surface of the sphere the most and there seem to be more folds which are thinner.
+	</p>
+	<p align="left" style="margin-left: 10%; margin-right:10%">
+		With ks=5000, the cloth's adherence to the sphere is clearly that which Is in between the two other images with lower and higher ks values. Its folds don't flare out as much.
+	</p>
+	<p align="left" style="margin-left: 10%; margin-right:10%">
+		With ks=50000, the cloth looks a bit "stiff." It doesn't seem to mold around the sphere as much as it would with lower ks. Its folds fan out more and are wider than the other ks values.
+	</p>
+	<div align="middle">
+		<table width="75%" align="middle">
+			<td>
+				<img src="./img/peaceful1.png" align="middle" style="width:300px" style="height: 300px" />
+				<figcaption align="middle">Peacefully at Rest</figcaption>
+			</td>
+			<td>
+				<img src="./img/peaceful2.png" align="middle" style="width:300px" style="height: 300px" />
+				<figcaption align="middle">Green Cloth on Green Plane</figcaption>
+			</td>
+			<td>
+				<img src="./img/peaceful3.png" align="middle" style="width:300px" style="height: 300px" />
+				<figcaption align="middle">Where's the Cloth?</figcaption>
+			</td>
+
+		</table>
+	</div>
+	<br>
+	<br>
+	<div align="middle">
+		<table width="90%" align="middle">
+			<td>
+				<img src="./img/mid1-1.png" align="middle" style="width:100%" />
+				<figcaption align="middle">Middle, ks = 10</figcaption>
+			</td>
+			<td>
+				<img src="./img/mid2-1.png" align="middle" style="width:100%" />
+				<figcaption align="middle">end, ks = 10</figcaption>
+			</td>
+
+			<td>
+				<img src="./img/mid1-2.png" align="middle" style="width:100%" />
+				<figcaption align="middle">Middle, ks = 10</figcaption>
+			</td>
+			<td>
+				<img src="./img/mid2-2.png" align="middle" style="width:100%" />
+				<figcaption align="middle">End, ks = 10</figcaption>
+			</td>
+
+		</table>
+	</div>
+	<div align="middle">
+		<table width="90%" align="middle">
+			<td>
+				<img src="./img/midhighks-1.png" align="middle" style="width:100%" />
+				<figcaption align="middle">Middle, ks = 50000</figcaption>
+			</td>
+			<td>
+				<img src="./img/endhighks-1.png" align="middle" style="width:100%" />
+				<figcaption align="middle">end, ks = 50000</figcaption>
+			</td>
+			<td>
+				<img src="./img/midhighks-2.png" align="middle" style="width:100%" />
+				<figcaption align="middle">Middle, ks = 50000</figcaption>
+			</td>
+			<td>
+				<img src="./img/endhighks-2.png" align="middle" style="width:100%" />
+				<figcaption align="middle">End, ks = 50000</figcaption>
+			</td>
+
+		</table>
+	</div>
+	<p align="left" style="margin-left: 10%; margin-right:10%">
+		With regards to spring constant ks, lower ks tends to make the cloth's self collision seem more like a liquid. There's much more fluidity in its motion and the end result reflects such. The cloth adheres to itself. Furthermore, the cloth collapsing onto itself while on the plane leads to so many more smaller self-collisions when ks is low, and thus the cloth looks rougher. On the other hand, higher ks allows for the cloth to spread out more, and as shown in the final resting state, the cloth is more rolled out across the plane. When the cloth collapses onto itself on the plane, the folds are smoother compared to the rougher collapse when ks is low.
+	</p>
+	<h2 align="middle">Part 5:Shaders</h2>
+	<h4 align="left" style="margin-left: 10%; margin-right:10%">This portion of the project required us to implement shaders that we can utilize to texture our cloth.</h4>
+	<div align="middle">
+		<table width="70%" align="middle">
+			<td>
+				<img src="./img/custommod-1.png" align="middle" style="width:100%" />
+				<figcaption align="middle">Custom Texture by Modifying</figcaption>
+			</td>
+			<td>
+				<img src="./img/custommod-2.png" align="middle" style="width:100%" />
+				<figcaption align="middle">Custom Texture by Modifying</figcaption>
+			</td>
+
+		</table>
+	</div>
+	<p align="left" style="margin-left: 10%; margin-right:10%">
+		A shader program lightens the load on the CPU in regards to rendering by having its tasks done in parallel on the GPU. A shader program is comprised of its vertex and fragment shaders, which work together in a pipeline: the vertex shaders manipulate the vertices it receives as inputs and outputs the results of these transformations to the fragment shaders who texture the model–whether it be through lighting or attaching materials to it.
+	</p>
+	<p align="left" style="margin-left: 10%; margin-right:10%">
+		Blinn-Phong makes use of three components of lighting to create the realistic shading of an object. These components are ambient shading (which is simply a constant amount of color affecting the scene), diffuse shading (appearance of an object no matter where in space it is viewed), and specular shading (which is the glare that varies on an object as a result of light intensity changing with the point of observation). The addition of these three components results in the final result of Blinn-Phong shading, creating a more realistic view of the object.
+	</p>
+	<div align="middle">
+		<table width="90%" align="middle">
+			<td>
+				<img src="./img/ambient.png" align="middle" style="width:200px" style="height: 200px" />
+				<figcaption align="middle">Ambient</figcaption>
+			</td>
+			<td>
+				<img src="./img/diffuse.png" align="middle" style="width:200px" style="height: 200px" />
+				<figcaption align="middle">Diffuse</figcaption>
+			</td>
+			<td>
+				<img src="./img/specular.png" align="middle" style="width:200px" style="height: 200px" />
+				<figcaption align="middle">Specular</figcaption>
+			</td>
+			<td>
+				<img src="./img/full.png" align="middle" style="width:200px" style="height: 200px" />
+				<figcaption align="middle">Full</figcaption>
+			</td>
+
+		</table>
+	</div>
+	<div align="middle">
+		<table width="90%" align="middle">
+			<td>
+				<img src="./img/bump_sphere.png" align="middle" style="width:300px" style="height: 300px" />
+				<figcaption align="middle">Bump Sphere</figcaption>
+			</td>
+			<td>
+				<img src="./img/bump_cloth.png" align="middle" style="width:300px" style="height: 300px" />
+				<figcaption align="middle">Bump Cloth</figcaption>
+			</td>
+
+			<td>
+				<img src="./img/bump_displacement.png" align="middle" style="width:300px" style="height: 300px" />
+				<figcaption align="middle">Bump Displacement</figcaption>
+			</td>
+
+
+		</table>
+	</div>
+	<p align="left" style="margin-left: 10%; margin-right:10%">
+		For bump mapping, we simply alter the normals of the objects by finding the change in height as we make changes in each axis of the texture coordinates. After the normals are modified, the fragment shader will color the object in such a way as to account for these "bumps" that we made through the normals. Displacement Mapping makes use of the same bump mapping procedure, however we add another layer of complexity by actually moving the vertices in our vertex shaders in accordance to the height at texture coordinate where the vertices lie. As can be seen through the renders, the bumps on the model are not as noticeable as actually changing the vertices in the model through displacement in terms of modifying the shape of the object. Bumps seem to be more of a change in texture, while displacement causes more of a change in shape.
+	</p>
+
+	<div align="middle">
+		<table width="90%" align="middle">
+			<td>
+				<img src="./img/16bump.png" align="middle" style="width:200px" style="height: 200px" />
+				<figcaption align="middle">16 Bump</figcaption>
+			</td>
+			<td>
+				<img src="./img/128bump.png" align="middle" style="width:200px" style="height: 200px" />
+				<figcaption align="middle">128 Bump</figcaption>
+			</td>
+			<td>
+				<img src="./img/16displace.png" align="middle" style="width:200px" style="height: 200px" />
+				<figcaption align="middle">16 Displacement</figcaption>
+			</td>
+			<td>
+				<img src="./img/128displace.png" align="middle" style="width:200px" style="height: 200px" />
+				<figcaption align="middle">128 Displacement</figcaption>
+			</td>
+		</table>
+	</div>
+	<p align="left" style="margin-left: 10%; margin-right:10%">
+		For bumps, the change in coarseness does not seem to provide any difference in appearance. On the other hand, there are stark differences for displacement: lower coarseness almost has the same effect as downsampling the mesh, or lessening the complexity of the model’s appearance. Higher coarseness allows for more degrees of freedom for the vertices of the model to change, while it seems that there are less vertices to be displaced when the sphere has lower coarseness and therefore the model looks downsampled.
+	</p>
+	<div align="middle">
+		<table width="90%" align="middle">
+			<td>
+				<img src="./img/basilica1.png" align="middle" style="width:300px" style="height: 300px" />
+				<figcaption align="middle">Mirror Shader Basilica 1</figcaption>
+			</td>
+			<td>
+				<img src="./img/basilica2.png" align="middle" style="width:300px" style="height: 300px" />
+				<figcaption align="middle">Mirror Shader Basilica 2</figcaption>
+			</td>
+
+			<td>
+				<img src="./img/basilica3.png" align="middle" style="width:300px" style="height: 300px" />
+				<figcaption align="middle">Mirror Shader Basilica 3</figcaption>
+			</td>
+
+
+		</table>
+	</div>
+	<br>
+	<br>
+
+	<h4 align="left" style="margin-left: 10%; margin-right:10%">https://cal-cs184-student.github.io/sp22-project-webpages-jkim1123/</h4>
+	<br>
+	<br>
